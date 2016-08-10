@@ -4,6 +4,6 @@ all:	inflight.cxx sterile_flux.h sterile_flux.cxx fourmomentum.h fourmomentum.cx
 	g++ -g -std=c++11  -c sterile_flux.cxx -o sterile_flux.o -I.  
 	g++ -g -std=c++11  -c channel.cxx -o channel.o -I. 
 	g++ -g -std=c++11  -c detector.cxx -o detector.o -I.  
-	g++ -g -std=c++11  -o inflight inflight.o detector.o fourmomentum.o sterile_flux.o channel.o -lgsl -lgslcblas   #-lgomp
+	g++ -g -std=c++11  -o inflight inflight.o detector.o fourmomentum.o sterile_flux.o channel.o -lgsl -lgslcblas
 	rm *.o
 

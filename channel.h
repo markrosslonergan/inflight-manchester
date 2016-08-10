@@ -1,3 +1,25 @@
+/*
+ *_________ _        _______  _       _________ _______          _________
+ *\__   __/( (    /|(  ____ \( \      \__   __/(  ____ \|\     /|\__   __/
+ *   ) (   |  \  ( || (    \/| (         ) (   | (    \/| )   ( |   ) (   
+ *   | |   |   \ | || (__    | |         | |   | |      | (___) |   | |   
+ *   | |   | (\ \) ||  __)   | |         | |   | | ____ |  ___  |   | |   
+ *   | |   | | \   || (      | |         | |   | | \_  )| (   ) |   | |   
+ *___) (___| )  \  || )      | (____/\___) (___| (___) || )   ( |   | |   
+ *\_______/|/    )_)|/       (_______/\_______/(_______)|/     \|   )_(   
+ *
+ *		Inflight, Event generator for sterile decays at SBL facilities
+ *
+ *		If you have any questions, queries or comments please contact the authors;
+ *			 mark.ross-lonergan@durham.ac.uk 
+ *			 or 
+ *			 peter.ballett@durham.ac.uk
+ *
+ *		The authors make no guarrentee of the behaviour, stability or bug-free-ness of this code.
+ *		Use is at own risk.
+ *
+ */
+
 #ifndef CHANNEL_H_
 #define CHANNEL_H_
 

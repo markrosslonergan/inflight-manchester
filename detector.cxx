@@ -1,3 +1,25 @@
+/*
+ *_________ _        _______  _       _________ _______          _________
+ *\__   __/( (    /|(  ____ \( \      \__   __/(  ____ \|\     /|\__   __/
+ *   ) (   |  \  ( || (    \/| (         ) (   | (    \/| )   ( |   ) (   
+ *   | |   |   \ | || (__    | |         | |   | |      | (___) |   | |   
+ *   | |   | (\ \) ||  __)   | |         | |   | | ____ |  ___  |   | |   
+ *   | |   | | \   || (      | |         | |   | | \_  )| (   ) |   | |   
+ *___) (___| )  \  || )      | (____/\___) (___| (___) || )   ( |   | |   
+ *\_______/|/    )_)|/       (_______/\_______/(_______)|/     \|   )_(   
+ *
+ *		Inflight, Event generator for sterile decays at SBL facilities
+ *
+ *		If you have any questions, queries or comments please contact the authors;
+ *			 mark.ross-lonergan@durham.ac.uk 
+ *			 or 
+ *			 peter.ballett@durham.ac.uk
+ *
+ *		The authors make no guarrentee of the behaviour, stability or bug-free-ness of this code.
+ *		Use is at own risk.
+ *
+ */
+
 #include "detector.h"
 
 
@@ -33,7 +55,6 @@ int nocuts::accept(OBSERVABLES * Obs)
 }
 
 
-//What follows is essentially the microBooNE cut flow for early testing purposes...
 muBooNE::muBooNE()
 {
 	flag = DET_MUBOONE;

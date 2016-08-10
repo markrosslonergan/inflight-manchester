@@ -1,15 +1,29 @@
+/*
+ *_________ _        _______  _       _________ _______          _________
+ *\__   __/( (    /|(  ____ \( \      \__   __/(  ____ \|\     /|\__   __/
+ *   ) (   |  \  ( || (    \/| (         ) (   | (    \/| )   ( |   ) (   
+ *   | |   |   \ | || (__    | |         | |   | |      | (___) |   | |   
+ *   | |   | (\ \) ||  __)   | |         | |   | | ____ |  ___  |   | |   
+ *   | |   | | \   || (      | |         | |   | | \_  )| (   ) |   | |   
+ *___) (___| )  \  || )      | (____/\___) (___| (___) || )   ( |   | |   
+ *\_______/|/    )_)|/       (_______/\_______/(_______)|/     \|   )_(   
+ *
+ *		Inflight, Event generator for sterile decays at SBL facilities
+ *
+ *		If you have any questions, queries or comments please contact the authors;
+ *			 mark.ross-lonergan@durham.ac.uk 
+ *			 or 
+ *			 peter.ballett@durham.ac.uk
+ *
+ *		The authors make no guarrentee of the behaviour, stability or bug-free-ness of this code.
+ *		Use is at own risk.
+ *
+ */
+
+
+
 #include "fourmomentum.h"
 
-// Things to do to make this better:
-//
-// 1. Do some proper error handling in the constructor. Exceptions?  
-//
-// 2. In the print function include more useful information?  
-//
-// 3. Overload the constructor to allow other ways to create these objects? For
-//    example, we could allow the creation of specific particles with hardcoded
-//    masses, by specifying just a 3-momentum, or an energy and a direction... 
-//
 
 fourmomentum::fourmomentum(double energy, std::vector<double> momentum)
 {
