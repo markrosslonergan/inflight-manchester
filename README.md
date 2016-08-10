@@ -5,7 +5,7 @@ If you have any questions please contact the authors mark.ross-lonergan@durham.a
 The authors make no guarrentee of this codes stability or bug-free-ness. Use is at own risk.
 ******************************************
 Allowed arguments:
-	-m, --mass			Sets the parent sterile mass. [default = 0.1500]
+	-m, --mass			Sets the parent sterile mass. [default = 0.1500] \n
 	-n, --number			How many events will we generate? [Default 100]
 	-C, --channel			sets the decay channel [default = 1] 
 						0: 3-body (nu e e).
