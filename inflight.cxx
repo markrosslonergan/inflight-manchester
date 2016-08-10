@@ -18,6 +18,9 @@
  *		The authors make no guarrentee of the behaviour, stability or bug-free-ness of this code.
  *		Use is at own risk.
  *
+ * Copyright (2016) 
+ * Mark Ross-Lonergan mark.ross-lonergan@durham.ac.uk 
+ * Peter Ballett peter.ballett@durham.ac.uk
  */
 #include <iostream>
 #include <cmath>

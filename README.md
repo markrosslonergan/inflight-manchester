@@ -1,4 +1,5 @@
 # inflight-manchester
+
  		Inflight, Event generator for sterile decays at SBL facilities
  
  		If you have any questions, queries or comments please contact the authors;
@@ -7,7 +8,12 @@
  			 peter.ballett@durham.ac.uk
  
  		The authors make no guarrentee of the behaviour, stability or bug-free-ness of this code.
- 		Use is at own risk.
+ 		This code is provide "as is", use is at own risk.
+
+Copyright (2016) 
+Mark Ross-Lonergan mark.ross-lonergan@durham.ac.uk 
+Peter Ballett peter.ballett@durham.ac.uk
+
  
  
 ******************************************
