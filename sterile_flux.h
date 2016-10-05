@@ -1,18 +1,18 @@
 /*
  *_________ _        _______  _       _________ _______          _________
  *\__   __/( (    /|(  ____ \( \      \__   __/(  ____ \|\     /|\__   __/
- *   ) (   |  \  ( || (    \/| (         ) (   | (    \/| )   ( |   ) (   
- *   | |   |   \ | || (__    | |         | |   | |      | (___) |   | |   
- *   | |   | (\ \) ||  __)   | |         | |   | | ____ |  ___  |   | |   
- *   | |   | | \   || (      | |         | |   | | \_  )| (   ) |   | |   
- *___) (___| )  \  || )      | (____/\___) (___| (___) || )   ( |   | |   
- *\_______/|/    )_)|/       (_______/\_______/(_______)|/     \|   )_(   
+ *   ) (   |  \  ( || (    \/| (         ) (   | (    \/| )   ( |   ) (
+ *   | |   |   \ | || (__    | |         | |   | |      | (___) |   | |
+ *   | |   | (\ \) ||  __)   | |         | |   | | ____ |  ___  |   | |
+ *   | |   | | \   || (      | |         | |   | | \_  )| (   ) |   | |
+ *___) (___| )  \  || )      | (____/\___) (___| (___) || )   ( |   | |
+ *\_______/|/    )_)|/       (_______/\_______/(_______)|/     \|   )_(
  *
  *		Inflight, Event generator for sterile decays at SBL facilities
  *
  *		If you have any questions, queries or comments please contact the authors;
- *			 mark.ross-lonergan@durham.ac.uk 
- *			 or 
+ *			 mark.ross-lonergan@durham.ac.uk
+ *			 or
  *			 peter.ballett@durham.ac.uk
  *
  *		The authors make no guarrentee of the behaviour, stability or bug-free-ness of this code.
@@ -38,7 +38,7 @@
 
 class initial_sterile {
 
-public: 
+public:
 	double mass;
 	double energy;
 	double costhS;
@@ -57,10 +57,10 @@ struct fluxfile
 {
 	fluxfile(std::string name, double min);
 	double getFlux(double Ein);
-	
+
 	std::string filename;
-	std::vector<double > fluxlist;
-	std::vector<double > elist;
+	std::vector<double> fluxlist;
+	std::vector<double> elist;
 
 	double fmax;
 	double mass;
