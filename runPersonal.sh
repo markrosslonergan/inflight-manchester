@@ -1,20 +1,24 @@
-# Case settings
+#  Settings
 export MASS="0.25" #in GeV
 export NUMBER="10"
 export CHANNEL="2"
-export FLUXFILE="flux_numu_${MASS}.dat"
+export FLUXFILE="FluxFiles/flux_numu_cut${MASS}.dat"
+export OUTFILE="Output/sterileEvents_m${MASS}_n${NUMBER}_c${CHANNEL}.dat"
 
 export CZYCUTS="--using-no-detector"
 export CZYHEPEVT="-v"
 
-# Command
+# Commands
 export CMD1="python fluxFiles/cropFlux.py ${MASS}"
-export CMD2="./inflight --mass ${MASS} --number ${NUMBER} --channel ${CHANNEL} --flux-file ${FLUXFILE} ${CZYCUTS} ${CZYHEPEVT}"
+export CMD2="./inflight --mass ${MASS} --number ${NUMBER} --channel ${CHANNEL} --flux-file ${FLUXFILE} ${CZYCUTS} ${CZYHEPEVT} > ${OUTFILE}"
 
-echo; echo "> ${CMD1}"; echo;
+# Execution and verbose
+echo
+
+echo "> ${CMD1}"; echo;
 eval ${CMD1};
 
-echo; echo "> ${CMD2}"; echo;
+echo "> ${CMD2}"; echo;
 eval ${CMD2};
 
 
@@ -28,7 +32,7 @@ eval ${CMD2};
 #
 # 						0: 3-body (nu e e).
 #
-# 						1: Isotroic 2-body e pi
+# 						1: Isotropic 2-body e pi
 #
 # 						2: Isotropic 2-body mu pi
 #

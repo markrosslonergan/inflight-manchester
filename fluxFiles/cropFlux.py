@@ -2,7 +2,7 @@ import numpy as np
 import os, sys, argparse
 
 def getScriptPath():
-    return os.path.dirname(os.path.realpath(sys.argv[0]))
+    return os.path.dirname(os.path.realpath(sys.argv[0]))+'/'
 
 def main():
     # Parser snippet
@@ -11,22 +11,18 @@ def main():
     args = parser.parse_args()
 
     # File path
-    fluxDir = '/Users/sdporzio/MyPythonPackages/SterileNeutrinosUtils/BnbNuFlux/'
-    fluxFile = 'flux_numu.dat'
-    outFile = getScriptPath()+'/'+fluxFile.replace('.dat','_%.2f.dat' %(args.energy))
-    print outFile
-
-    pathIn = fluxDir + fluxFile
-    dataIn = np.genfromtxt(pathIn,delimiter=' ',skip_header=1,names=True,dtype=None)
+    inFile = getScriptPath()+'OriginalFlux/flux_numu.dat'
+    outFile = getScriptPath()+'flux_numu_cut%.2f.dat' %(args.energy)
+    inData = np.genfromtxt(inFile,delimiter=' ',skip_header=1,names=True,dtype=None)
 
     # Crop data
-    for i,data in enumerate(dataIn):
-        dataIn['Energy'][i] = dataIn['Energy'][i]/1000.
+    for i,data in enumerate(inData):
+        inData['Energy'][i] = inData['Energy'][i]/1000.
         if data['Energy']<=args.energy:
-            dataIn['Flux'][i] = 0
+            inData['Flux'][i] = 0
 
     # Save output
-    np.savetxt(outFile,dataIn,delimiter=' ',fmt='%s')
+    np.savetxt(outFile,inData,delimiter=' ',fmt='%s')
 
 if __name__ == "__main__":
     main()
