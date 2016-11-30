@@ -1,25 +1,24 @@
-#  Settings
-export MASS="0.25" #in GeV
-export NUMBER="10"
-export CHANNEL="2"
-export FLUXFILE="FluxFiles/flux_numu_cut${MASS}.dat"
-export OUTFILE="Output/sterileEvents_m${MASS}_n${NUMBER}_c${CHANNEL}.dat"
+run(){
+  COLOR='\033[1;33m'
+  DEFAULT='\033[0m'
+  echo -e "${COLOR}-> ${1}${DEFAULT}";
+  eval ${1};
+}
 
-export CZYCUTS="--using-no-detector"
-export CZYHEPEVT="-v"
+#  Settings
+MASS="0.40" #in GeV
+NUMBER="10"
+CHANNEL="0"
+FLUXFILE="FluxFiles/flux_numu_cut${MASS}.dat"
+OUTFILE="Output/sterileEvents_m${MASS}_n${NUMBER}_c${CHANNEL}.dat"
+
+IF_CUTS="--using-no-detector"
+IF_HEPEVT="--hepevt"
 
 # Commands
-export CMD1="python fluxFiles/cropFlux.py ${MASS}"
-export CMD2="./inflight --mass ${MASS} --number ${NUMBER} --channel ${CHANNEL} --flux-file ${FLUXFILE} ${CZYCUTS} ${CZYHEPEVT} > ${OUTFILE}"
-
-# Execution and verbose
-echo
-
-echo "> ${CMD1}"; echo;
-eval ${CMD1};
-
-echo "> ${CMD2}"; echo;
-eval ${CMD2};
+run "python fluxFiles/cropFlux.py ${MASS}"
+# run "./inflight --mass ${MASS} --number ${NUMBER} --channel ${CHANNEL} --flux-file ${FLUXFILE} ${IF_CUTS} ${IF_HEPEVT} > ${OUTFILE}"
+run "./inflight --mass ${MASS} --number ${NUMBER} --channel ${CHANNEL} --flux-file ${FLUXFILE} ${IF_CUTS} ${IF_HEPEVT}"
 
 
 # ******************************************
