@@ -42,6 +42,12 @@ int twoIP_channel::decayfunction(initial_sterile nuS)
 	std::cout<<"You've somehow managed to call the decayfunction of the parent class (twoIP_channel). Don't do that."<<std::endl;
 return 0;
 }
+int twoIP_channel::decayfunctionMassive(initial_sterile nuS,double m0, double m1, double m2)
+{
+	std::cout<<"You've somehow managed to call the decayfunction of the parent class (twoIP_channel). Don't do that."<<std::endl;
+return 0;
+}
+
 
 int twoIP_channel::observables(OBSERVABLES * output, gsl_rng *g)
 {
@@ -211,6 +217,40 @@ int threebody::decayfunction(initial_sterile nuS)
 return 0;
 }
 
+int threebody::decayfunctionMassive(initial_sterile nuS,double m0, double m1, double m2)
+{
+	double p0[] = {0.0,0.0,0.0,0.0};
+	double p1[] = {0.0,0.0,0.0,0.0};
+	drawRestFrameDistMassive(r,nuS.mass,m0,m1,m2, p0,p1); //this will populate the doubles.
+	computeLabFrameVariablesMassive(nuS,p0,p1);
+return 0;
+}
+
+int threebody::computeLabFrameVariablesMassive(initial_sterile nuS, double p0[4], double p1[4])
+{
+	double mS = nuS.mass;
+	double Es = nuS.energy;
+
+	double beta = sqrt(1-mS*mS/(Es*Es));
+	double gamma = 1.0/sqrt(1.0-beta*beta);
+
+	double Px =nuS.labframeP.p.at(0);
+	double Py =nuS.labframeP.p.at(1);
+	double Pz =nuS.labframeP.p.at(2);
+
+	std::vector< double > Vec_P0_lab = generic_boost(Es,-Px,-Py,-Pz, p0[0], p0[1],p0[2],p0[3] );
+	std::vector< double > Vec_P1_lab = generic_boost(Es,-Px,-Py,-Pz, p1[0], p1[1],p1[2],p1[3] );
+	std::vector< double > silly0 = {Vec_P0_lab[1],Vec_P0_lab[2],Vec_P0_lab[3]};
+	std::vector< double > silly1 = {Vec_P1_lab[1],Vec_P1_lab[2],Vec_P1_lab[3]};
+
+	IP1.populate(Vec_P0_lab[0], silly0);
+	IP2.populate(Vec_P1_lab[0], silly1);
+
+return 0;
+}
+
+
+
 int threebody::computeLabFrameVariables(double mS, double Es, double costhS, double phiS, double restFrameParams[3])
 {
 	double Enu = restFrameParams[0];
@@ -325,6 +365,115 @@ int threebody::rotor(double theta, double phi, double vector[3])
 
 return 0;
 }
+
+std::vector<double > threebody::generic_boost(double Ep, double px, double py, double pz, double Er, double rx, double ry, double rz){	
+		double pnorm = sqrt(px*px+py*py+pz*pz);
+		double nx = px/pnorm;
+		double ny = py/pnorm;
+		double nz = pz/pnorm;
+
+		double B = pnorm/Ep;
+	        double g = 1.0/sqrt(1-B*B);
+	
+		std::vector<double > boosted;
+
+		boosted.push_back( Er*g-B*g*nx*rx-B*g*ny*ry-B*g*nz*rz);
+		boosted.push_back( -B*Er*g*nx+(1+(-1+g)*nx*nx)*rx+(-1+g)*nx*ny*ry+(-1+g)*nx*nz*rz);
+		boosted.push_back( -B*Er*g*ny+(-1+g)*nx*ny*rx+(1+(-1+g)*ny*ny)*ry+(-1+g)*ny*nz*rz);
+		boosted.push_back( -B*Er*g*nz+(-1+g)*nx*nz*rx+(-1+g)*ny*nz*ry+(1+(-1+g)*nz*nz)*rz);
+
+		
+		//std::cout<<Ep<<" "<<px<<" "<<py<<" "<<pz<<" "<<Er<<" "<<rx<<" "<<ry<<" "<<rz<<std::endl;
+	//	std::cout<<boosted[0]<<" "<<boosted[1]<<" "<<boosted[2]<<" "<<boosted[3]<<std::endl;
+	return boosted;
+}
+
+
+
+
+int threebody::drawRestFrameDistMassive(gsl_rng * r, double mS, double m0, double m1, double m2, double p0[4], double p1[4])
+{
+
+	double sumofdau =m0+m1+m2;
+
+	double mommax=0.0;
+	double momsum=0.0;
+	double rd1=0;
+	double rd = 0;
+	double rd2 = 0;
+	double energy = 0;
+
+	double absP0 = 0;
+	double absP1 = 0;
+	double absP2 = 0;
+
+	do{
+		rd1 = gsl_rng_uniform(r);
+		rd2 = gsl_rng_uniform(r);
+		if(rd2>rd1){
+			rd=rd1;rd1=rd2;rd2=rd;
+		};
+		mommax=0.0;
+		momsum=0.0;
+
+		//Daughter 0
+		energy = rd2*(mS - sumofdau);
+		absP0 = sqrt(energy*energy + 2.0*energy*m0);
+		if(absP0 > mommax) mommax = absP0;
+		momsum = momsum + absP0;
+
+		// Daughter 1
+		energy = (1.0 - rd1)*(mS - sumofdau);
+		absP1 = sqrt(energy*energy + 2.0*energy*m1);
+		if(absP1 > mommax) mommax = absP1;
+		momsum = momsum + absP1;
+
+		// Daughter 2
+		energy = (rd1 - rd2)*(mS - sumofdau);
+		absP2 = sqrt(energy*energy + 2.0*energy*m2);
+		if(absP2 > mommax) mommax = absP2;
+		momsum = momsum + absP2;
+
+
+
+	} while (mommax > momsum-mommax);
+
+	double costheta, sintheta, phi,sinphi,cosphi;
+	double costhetan, sinthetan,phin,sinphin,cosphin;
+
+	costheta=2.0*gsl_rng_uniform(r)-1.0;
+        sintheta= sqrt((1-costheta)*(1+costheta));
+	phi=2*3.14159*gsl_rng_uniform(r);
+	sinphi=sin(phi);
+	cosphi=cos(phi);
+
+	std::vector<double > tp0 = {sqrt(m0*m0+absP0*absP0),absP0*sintheta*cosphi, absP0*sintheta*sinphi, absP0*costheta};
+
+	p0[1]= absP0*sintheta*cosphi;
+       	p0[2]= absP0*sintheta*sinphi;
+       	p0[3]= absP0*costheta;
+	
+
+	costhetan = (absP1*absP1-absP2*absP2-absP0*absP0)/(2.0*absP2*absP0);
+	sinthetan = sqrt((1-costhetan)*(1+costhetan));
+	phin = 2*3.14159*gsl_rng_uniform(r);
+	sinphin=sin(phin);
+	cosphin=cos(phin);
+
+	std::vector<double > d2 = {sinthetan*cosphin*costheta*cosphi - sinthetan*sinphin*sinphi +   costhetan*sintheta*cosphi, sinthetan*cosphin*costheta*sinphi + sinthetan*sinphin*cosphi + costhetan*sintheta*sinphi, -sinthetan*cosphin*sintheta + costhetan*costheta};
+
+	p0[0] = sqrt(m0*m0+absP0*absP0);
+	p1[0] = sqrt(m1*m1+absP1*absP1);
+	double E2 = sqrt(m2*m2+absP2*absP2);
+
+	std::vector<double > p2 = {E2,absP2*d2[0],absP2*d2[1],absP2*d2[2]};
+
+	p1[1] = -(tp0[1]+p2[1]);
+	p1[2] = -(tp0[2]+p2[2]);
+	p1[3] = -(tp0[3]+p2[3]);
+return 0;
+}
+
 
 int threebody::drawRestFrameDist(gsl_rng * r, double mS, double mZprime, double output[3])
 {

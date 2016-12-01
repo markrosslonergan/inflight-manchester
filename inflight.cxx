@@ -147,7 +147,7 @@ while(iarg != -1)
 		std::cout<<"Allowed arguments:"<<std::endl;
 		std::cout<<"\t-m, --mass\t\t\tSets the parent sterile mass. [default = 0.1500]"<<std::endl;
 		std::cout<<"\t-n, --number\t\t\tHow many events will we generate? [Default 100]"<<std::endl;
-		std::cout<<"\t-C, --channel\t\t\tsets the decay channel [default = 1] \n\t\t\t\t\t\t0: 3-body (nu e e).\n\t\t\t\t\t\t1: Isotroic 2-body e pi\n\t\t\t\t\t\t2: Isotropic 2-body mu pi\n\t\t\t\t\t\t3: Isotropic 2-body nu Pi0\n\t\t\t\t\t\t4: Isotropic 2-body nu gamma"<<std::endl;
+		std::cout<<"\t-C, --channel\t\t\tsets the decay channel [default = 1] \n\t\t\t\t\t\t0: 3-body (nu e e).\n\t\t\t\t\t\t1: Isotroic 2-body e pi\n\t\t\t\t\t\t2: Isotropic 2-body mu pi\n\t\t\t\t\t\t3: Isotropic 2-body nu Pi0\n\t\t\t\t\t\t4: Isotropic 2-body nu gamma\n\t\t\t\t\t\t5: 3-body nu mu mu\n\t\t\t\t\t\t6: 3-body nu mu e"<<std::endl;
 		//std::cout<<"\t-M or --migration\t\t\tproduces a migration matrix for oberservable 'n' (argument probably doesn't work as yet)"<<std::endl;
 		//std::cout<<"\t-E of --efficiency\t\t\tproduces an efficiency matrix for total energy. "<<std::endl;
 		std::cout<<"\t--using-no-detector\t\truns with no detector cuts. [DEFAULT] "<<std::endl;
@@ -211,6 +211,20 @@ switch(channel_flag)
 		CHAN = new threebody(r,model_params); 
 //		std::cout<<"channel: e e"<<std::endl;
 		break;
+	case CHAN_MUMU:
+		model_params.push_back(91.19); //mediator mass
+		model_params.push_back((double) CHAN_MUMU); // the pion. 
+		model_params.push_back((double) CHAN_MUMU); // the pion. 
+		CHAN = new threebody(r,model_params); 
+		break;
+	case CHAN_MUE:
+		model_params.push_back(91.19); //mediator mass
+		model_params.push_back((double) CHAN_MUE); // the pion. 
+		model_params.push_back((double) CHAN_MUE); // the pion. 
+		CHAN = new threebody(r,model_params); 
+		break;
+
+
 
 	default:
 		std::cout<<"ERROR: Bad channel specifier."<<std::endl;
@@ -250,6 +264,16 @@ switch(detector_flag)
 			DETECTOR = new muBooNE_gamma(); 	// isotropic muon pion.
 //			std::cout<<"detector: muB mu pi"<<std::endl;
 			break;
+		case CHAN_MUMU:
+			DETECTOR = new muBooNE_ee(); 	// isotropic muon pion.
+//			std::cout<<"detector: muB mu pi"<<std::endl;
+			break;
+		case CHAN_MUE:
+			DETECTOR = new muBooNE_ee(); 	// isotropic muon pion.
+//			std::cout<<"detector: muB mu pi"<<std::endl;
+			break;
+
+
 
 		}
 		break;
@@ -281,8 +305,16 @@ if(channel_flag == CHAN_ELECPOSI && mS < 2*ME)
 	std::cout<<"ERROR: ee channel can't work with sterile masses below "<<2*ME<<" GeV."<<std::endl;
 	return -1;
 }
-
-
+if(channel_flag == CHAN_MUMU && mS < 2*MMU)
+{
+	std::cout<<"ERROR: mu mu channel can't work with sterile masses below "<<2*MMU<<" GeV."<<std::endl;
+	return -1;
+}
+if(channel_flag == CHAN_MUE && mS < ME+MMU)
+{
+	std::cout<<"ERROR: mu e channel can't work with sterile masses below "<<MMU+ME<<" GeV."<<std::endl;
+	return -1;
+}
 
 /***************************
  *	Main program Flow
@@ -298,7 +330,9 @@ if(matrix_flag == 0)
 			output_distributions(r, DETECTOR, CHAN, mS,hepevt, flux_name, NUMEVENTS);
 			break;
 		case CHAN_NUPI0:
-		case CHAN_GAMMA:	
+		case CHAN_GAMMA:
+		case CHAN_MUMU:
+		case CHAN_MUE:	
 			output_distributions(r, DETECTOR, CHAN, mS, hepevt, flux_name, NUMEVENTS);
 			break;
 		default:
@@ -366,7 +400,23 @@ for(m=0;m<NUMEVENTS;m++)
 //		nus.labframeP.print("nus.labframeP");
 
 		//We call the appropriate functions from the channels.
-		CHAN->decayfunction(nus);
+				switch(CHAN->chan_identifier){
+					case CHAN_MUMU:
+						CHAN->decayfunctionMassive(nus,MMU,MMU,0.0);
+						break;
+					case CHAN_MUE:
+						CHAN->decayfunctionMassive(nus,MMU,ME,0.0);
+						break;	
+					case CHAN_ELECPI:
+					case CHAN_MUONPI:
+					case CHAN_NUPI0:
+					case CHAN_ELECPOSI:
+					case CHAN_GAMMA:
+						CHAN->decayfunction(nus);
+						break;
+			}
+		
+
 		CHAN->observables(&Obs, r);
 
 		// The following sterile observables can't be assigned at the channel
