@@ -6,9 +6,9 @@ run(){
 }
 
 #  Settings
-MASS="0.40" #in GeV
-NUMBER="10"
-CHANNEL="0"
+MASS="0.30" #in GeV
+NUMBER="100000"
+CHANNEL="2"
 FLUXFILE="FluxFiles/flux_numu_cut${MASS}.dat"
 OUTFILE="Output/sterileEvents_m${MASS}_n${NUMBER}_c${CHANNEL}.dat"
 
@@ -16,9 +16,9 @@ IF_CUTS="--using-no-detector"
 IF_HEPEVT="--hepevt"
 
 # Commands
-run "python fluxFiles/cropFlux.py ${MASS}"
-# run "./inflight --mass ${MASS} --number ${NUMBER} --channel ${CHANNEL} --flux-file ${FLUXFILE} ${IF_CUTS} ${IF_HEPEVT} > ${OUTFILE}"
-run "./inflight --mass ${MASS} --number ${NUMBER} --channel ${CHANNEL} --flux-file ${FLUXFILE} ${IF_CUTS} ${IF_HEPEVT}"
+run "python FluxFiles/generateSterileFlux.py ${MASS}"
+run "./inflight --mass ${MASS} --number ${NUMBER} --channel ${CHANNEL} --flux-file ${FLUXFILE} ${IF_CUTS} ${IF_HEPEVT} > ${OUTFILE}"
+# run "./inflight --mass ${MASS} --number ${NUMBER} --channel ${CHANNEL} --flux-file ${FLUXFILE} ${IF_CUTS} ${IF_HEPEVT}"
 
 
 # ******************************************
@@ -29,7 +29,7 @@ run "./inflight --mass ${MASS} --number ${NUMBER} --channel ${CHANNEL} --flux-fi
 #
 # 	-C, --channel			sets the decay channel [default = 1]
 #
-# 						0: 3-body (nu e e).
+# 						0: 3-body (nu e e)
 #
 # 						1: Isotropic 2-body e pi
 #
@@ -38,6 +38,10 @@ run "./inflight --mass ${MASS} --number ${NUMBER} --channel ${CHANNEL} --flux-fi
 # 						3: Isotropic 2-body nu Pi0
 #
 # 						4: Isotropic 2-body nu gamma
+#
+# 						5: 3-body (nu mu mu)
+#
+# 						6: 3-body (nu mu e)
 #
 # 	--using-no-detector		runs with no detector cuts. [DEFAULT]
 #
