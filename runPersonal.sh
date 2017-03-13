@@ -6,11 +6,11 @@ run(){
 }
 
 #  Settings
-MASS="0.30" #in GeV
-NUMBER="100000"
+MASS="0.25" #in GeV
+NUMBER="20000"
 CHANNEL="2"
 FLUXFILE="FluxFiles/flux_numu_cut${MASS}.dat"
-OUTFILE="Output/sterileEvents_m${MASS}_n${NUMBER}_c${CHANNEL}.dat"
+OUTFILE="Output/sterileEvents_mass${MASS}_channel${CHANNEL}_n${NUMBER}.dat"
 
 IF_CUTS="--using-no-detector"
 IF_HEPEVT="--hepevt"
