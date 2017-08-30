@@ -440,15 +440,18 @@ int output_distributions(gsl_rng * r, detector * DETECTOR, twoIP_channel * CHAN,
 		double speedOfLight = 299792458; // m/s
 		double distance = 470; // m
 		double delay = distance/speedOfLight * (Obs.E_sterile/(sqrt(pow(Obs.E_sterile,2.) - pow(mS,2.))) - 1.); // Delay with respect to active neutrinos
-		double sterileDelay = delay/1e9; // Convert to ns
+
+		double sterileDelay = delay*1e9; // Convert to ns
 		double globalTimeOffset = 3125;
 		double randomTimeOffset = (1600)*gsl_rng_uniform(r);
+		if (randomTimeOffset < 0 || sterileDelay < 0){
+			std::printf("Something's wrong! %f %f", randomTimeOffset, sterileDelay)
+		}
 
 		double posx = (236.35)*gsl_rng_uniform(r) + 10.;
 		double posy = (213)*gsl_rng_uniform(r) - 105.53;
 		double posz = (1016.8)*gsl_rng_uniform(r) + 10.1;
 		double time = globalTimeOffset + randomTimeOffset + sterileDelay;
-
 
 
 		if(DETECTOR->accept(&Obs)==ACCEPTED)
@@ -468,6 +471,7 @@ int output_distributions(gsl_rng * r, detector * DETECTOR, twoIP_channel * CHAN,
 					printf("%i 2\n",m);
 					printf("1 11 0 0 0 0 %.5lf %.5lf %.5lf %.5lf %.5lf %.5lf %.5lf %.5lf %.5lf\n",Obs.P_high[0],Obs.P_high[1],Obs.P_high[2],Obs.E_high,CHAN->model_params[0],posx,posy,posz,time);
 					printf("1 211 0 0 0 0 %.5lf %.5lf %.5lf %.5lf %.5lf %.5lf %.5lf %.5lf %.5lf\n",Obs.P_low[0],Obs.P_low[1],Obs.P_low[2],Obs.E_low,CHAN->model_params[1],posx,posy,posz,time);
+					break;
 					case CHAN_MUONPI:
 					printf("%i 2\n",m);
 					printf("1 13 0 0 0 0 %.5lf %.5lf %.5lf %.5lf %.5lf %.5lf %.5lf %.5lf %.5lf\n",Obs.P_high[0],Obs.P_high[1],Obs.P_high[2],Obs.E_high,CHAN->model_params[0],posx,posy,posz,time);

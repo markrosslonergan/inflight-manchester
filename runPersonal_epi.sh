@@ -6,20 +6,23 @@ run(){
 }
 
 #  Settings
-MASS="0.25" #in GeV
-NUMBER="20000"
-CHANNEL="2"
-FLUXFILE="FluxFiles/flux_numu_cut${MASS}.dat"
-OUTFILE="Output/sterileEvents_mass${MASS}_channel${CHANNEL}_n${NUMBER}.dat"
+MASS=("0.141" "0.16" "0.3" "0.49") #in GeV
+NUMBER="50000"
+CHANNEL="1"
 
 IF_CUTS="--using-no-detector"
 IF_HEPEVT="--hepevt"
+run "source /Users/sdporzio/SterileNeutrinoAnalysis/Flux/HeavySterileNeutrinoFlux_ScaleActiveFlux/setup.sh"
 
 # Commands
-run "python FluxFiles/generateSterileFlux.py ${MASS}"
-run "./inflight --mass ${MASS} --number ${NUMBER} --channel ${CHANNEL} --flux-file ${FLUXFILE} ${IF_CUTS} ${IF_HEPEVT} > ${OUTFILE}"
-# run "./inflight --mass ${MASS} --number ${NUMBER} --channel ${CHANNEL} --flux-file ${FLUXFILE} ${IF_CUTS} ${IF_HEPEVT}"
-
+for mass in "${MASS[@]}"
+do
+  OUTFILE="Output/sterileEvents_channel${CHANNEL}_mass${mass}_n${NUMBER}.hepevt"
+  run "python /Users/sdporzio/SterileNeutrinoAnalysis/Flux/HeavySterileNeutrinoFlux_ScaleActiveFlux/3_SterileFlux/generateFlux.py -m ${mass} -o FluxFiles"
+  FLUXFILE="FluxFiles/sterileFlux_m${mass}.csv"
+  run "./inflight --mass ${mass} --number ${NUMBER} --channel ${CHANNEL} --flux-file ${FLUXFILE} ${IF_CUTS} ${IF_HEPEVT} > ${OUTFILE}"
+  # run "./inflight --mass ${MASS} --number ${NUMBER} --channel ${CHANNEL} --flux-file ${FLUXFILE} ${IF_CUTS} ${IF_HEPEVT}"
+done
 
 # ******************************************
 # Allowed arguments:
