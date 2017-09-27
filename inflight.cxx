@@ -445,7 +445,7 @@ int output_distributions(gsl_rng * r, detector * DETECTOR, twoIP_channel * CHAN,
 		double globalTimeOffset = 3125;
 		double randomTimeOffset = (1600)*gsl_rng_uniform(r);
 		if (randomTimeOffset < 0 || sterileDelay < 0){
-			std::printf("Something's wrong! %f %f", randomTimeOffset, sterileDelay)
+			std::printf("Something's wrong! %f %f", randomTimeOffset, sterileDelay);
 		}
 
 		double posx = (236.35)*gsl_rng_uniform(r) + 10.;
